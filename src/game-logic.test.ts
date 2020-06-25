@@ -1,4 +1,4 @@
-const { updateCells } = require('./index');
+import { updateCellBoard } from './game-logic';
 
 describe('still life (stays the same forever)', () => {
   test('4x4 block', () => {
@@ -8,8 +8,8 @@ describe('still life (stays the same forever)', () => {
       [0, 1, 1, 0],
       [0, 0, 0, 0],
     ];
-    expect(updateCellBoard(cells)).toEqual(cells);  
-  })
+    expect(updateCellBoard(cells)).toEqual(cells);
+  });
   test('beehive', () => {
     const cells = [
       [0, 0, 0, 0, 0, 0],
@@ -18,11 +18,11 @@ describe('still life (stays the same forever)', () => {
       [0, 0, 1, 1, 0, 0],
       [0, 0, 0, 0, 0, 0],
     ];
-    expect(updateCellBoard(cells)).toEqual(cells);  
-  })
-})
+    expect(updateCellBoard(cells)).toEqual(cells);
+  });
+});
 
-describe(`oscillating life`, () => {
+describe('oscillating life', () => {
   test('line', () => {
     const stateOne = [
       [0, 0, 0, 0, 0],
@@ -46,5 +46,5 @@ describe(`oscillating life`, () => {
     const secondTick = updateCellBoard(firstTick);
 
     expect(secondTick).toEqual(stateOne);
-  })
-})
+  });
+});
