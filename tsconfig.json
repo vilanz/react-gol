@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "noImplicitAny": true,
-    "esModuleInterop": true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
-    "allowJs": true
-  }
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
