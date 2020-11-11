@@ -33,7 +33,9 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@types/react-motion": "0.0.29",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-motion": "^0.5.2"
   }
 }

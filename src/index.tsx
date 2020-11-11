@@ -10,7 +10,7 @@ function App(): JSX.Element {
   React.useEffect(() => {
     const refresh = setInterval(() => {
       setBoard((b) => updateCellBoard(b));
-    }, 300);
+    }, 1000);
     return () => clearInterval(refresh);
   }, []);
 
@@ -20,7 +20,7 @@ function App(): JSX.Element {
         // eslint-disable-next-line react/no-array-index-key
         <div style={{ display: 'flex' }} key={idx}>
           {
-            row.map((cell) => <div style={{ height: '15px', width: '15px', backgroundColor: cell ? 'blue' : 'green' }} />)
+            row.map((cell) => <div style={{ height: '50px', width: '50px', backgroundColor: cell ? 'orange' : 'black', transition: 'background-color 0.5s ease' }} />)
           }
         </div>
       ))}
