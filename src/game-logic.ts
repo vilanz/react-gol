@@ -34,14 +34,13 @@ export function updateCellBoard(cells: Board) {
   )));
 }
 
-function getEmptyRow(): BoardRow {
-  return Array(10).fill(0);
-}
-
-export function getEmptyBoard(): Board {
-  return Array(10).fill([]).map(() => getEmptyRow());
+export function getEmptyBoard(size: number): Board {
+  return Array(size).fill([]).map(() => {
+    const emptyRow = Array(size).fill(0);
+    return emptyRow;
+  });
 }
 
 export function randomizeRow(row: BoardRow): BoardRow {
-  return row.map(() => Math.round(Math.random()));
+  return row.map(() => (Math.random() > 0.5 ? 1 : 0));
 }

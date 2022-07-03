@@ -1,35 +1,27 @@
 import React from 'react';
+import { GameRow } from './board';
 import {
   getEmptyBoard, randomizeRow, Board, updateCellBoard,
 } from './game-logic';
 
-const randomizedBoard = getEmptyBoard().map(randomizeRow);
-
 export function Game() {
-  const [board, setBoard] = React.useState<Board>(randomizedBoard);
+  const [board, setBoard] = React.useState<Board>(
+    () => getEmptyBoard(60).map(randomizeRow),
+  );
 
   React.useEffect(() => {
     const refresh = setInterval(() => {
       setBoard((b) => updateCellBoard(b));
-    }, 1000);
+    }, 300);
     return () => clearInterval(refresh);
   }, []);
 
   return (
     <div>
       {board.map((row, idx) => (
-        <div style={{ display: 'flex' }} key={idx}>
-          {row.map((cell) => (
-            <div
-              style={{
-                height: '50px',
-                width: '50px',
-                backgroundColor: cell ? 'orange' : 'black',
-                transition: 'background-color 0.5s ease',
-              }}
-            />
-          ))}
-        </div>
+        // Row indexes are stable
+        // eslint-disable-next-line react/no-array-index-key
+        <GameRow row={row} key={idx} />
       ))}
     </div>
   );

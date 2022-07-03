@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+}
+
+.game-row {
+    display: flex;
+}
+
+.game-cell {
+    height: 20px;
+    width: 20px;
+    transition: 'background-color 0.5s ease';
+}
+
+.game-cell.alive {
+    background-color: aqua;
+}
+
+.game-cell.dead {
+    background-color: blueviolet;
+}
