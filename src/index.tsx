@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { getEmptyCellBoard, Board, updateCellBoard } from './game-logic';
+import {
+  getEmptyBoard, randomizeRow, Board, updateCellBoard,
+} from './game-logic';
 
-const randomizedBoard = getEmptyCellBoard().map((row) => row.map(() => Math.round(Math.random())));
+const randomizedBoard = getEmptyBoard().map(randomizeRow);
 
 function App() {
   const [board, setBoard] = React.useState<Board>(randomizedBoard);

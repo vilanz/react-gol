@@ -18,7 +18,7 @@ function getLiveNeighourCount(rowIndex: number, colIndex: number, board: Board) 
   return liveNeighbours.length;
 }
 
-function getCellState(cell: BoardCell, rowIndex: number, colIndex: number, board: Board) {
+function isCellAlive(cell: BoardCell, rowIndex: number, colIndex: number, board: Board) {
   const neighbourCount = getLiveNeighourCount(rowIndex, colIndex, board);
   if (cell) {
     return neighbourCount === 2 || neighbourCount === 3;
@@ -27,27 +27,21 @@ function getCellState(cell: BoardCell, rowIndex: number, colIndex: number, board
 }
 
 export function updateCellBoard(cells: Board) {
-  return cells.map((row, rowIndex) => row.map((cell, colIndex) => {
-    const isAlive = getCellState(cell, rowIndex, colIndex, cells);
-    return isAlive ? 1 : 0;
-  }));
+  return cells.map((row, rowIndex) => row.map((cell, colIndex) => (
+    isCellAlive(cell, rowIndex, colIndex, cells)
+      ? 1
+      : 0
+  )));
 }
 
-export function getEmptyCellBoard(): Board {
-  return [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+function getEmptyRow(): BoardRow {
+  return Array(10).fill(0);
+}
+
+export function getEmptyBoard(): Board {
+  return Array(10).fill([]).map(() => getEmptyRow());
+}
+
+export function randomizeRow(row: BoardRow): BoardRow {
+  return row.map(() => Math.round(Math.random()));
 }
