@@ -8,11 +8,13 @@ import {
 const BOARD_SIZE = 300;
 const UPDATE_EVERY_X_MS = 1000 / 5;
 
+const INITIAL_BOARD = () => getEmptyBoard(BOARD_SIZE).map(randomizeRow);
+
 export function Game() {
   const useEffectCalled = useRef(false);
   const animationFrameRef = useRef<number | null>(null);
   const [board, setBoard] = useState<Board>(
-    () => getEmptyBoard(BOARD_SIZE).map(randomizeRow),
+    INITIAL_BOARD,
   );
 
   useLayoutEffect(() => {
