@@ -21,7 +21,8 @@ module.exports = {
   ],
   rules: {
     'import/extensions': 'off',
-    'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.ts', '.tsx'] }],
+    'import/prefer-default-export': 'off',
   },
   settings: {
     'import/resolver': {
