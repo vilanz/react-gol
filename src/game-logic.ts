@@ -1,3 +1,5 @@
+import structuredClone from '@ungap/structured-clone';
+
 export type BoardCell = number;
 export type BoardRow = BoardCell[];
 export type Board = BoardRow[];
@@ -8,30 +10,24 @@ function getLiveNeighourCount(rowIndex: number, colIndex: number, board: Board) 
     [rowIndex, colIndex - 1], [rowIndex, colIndex + 1],
     [rowIndex + 1, colIndex - 1], [rowIndex + 1, colIndex], [rowIndex + 1, colIndex + 1],
   ];
-  const liveNeighbours = neighbours.filter(([x, y]) => {
-    try {
-      return board[x][y];
-    } catch (_) {
-      return false;
-    }
-  });
+  const liveNeighbours = neighbours.filter(([x, y]) => board[x] && board[x][y]);
   return liveNeighbours.length;
 }
 
-function isCellAlive(cell: BoardCell, rowIndex: number, colIndex: number, board: Board) {
+function getCellStatus(cell: BoardCell, rowIndex: number, colIndex: number, board: Board): number {
   const neighbourCount = getLiveNeighourCount(rowIndex, colIndex, board);
-  if (cell) {
-    return neighbourCount === 2 || neighbourCount === 3;
-  }
-  return neighbourCount === 3;
+  const alive = cell
+    ? neighbourCount === 2 || neighbourCount === 3
+    : neighbourCount === 3;
+  return alive ? 1 : 0;
 }
 
-export function updateCellBoard(cells: Board) {
-  return cells.map((row, rowIndex) => row.map((cell, colIndex) => (
-    isCellAlive(cell, rowIndex, colIndex, cells)
-      ? 1
-      : 0
-  )));
+function getUpdatedRow(row: BoardRow, rowIdx: number, originalBoard: Board): BoardRow {
+  return row.map((cell, cellIdx) => getCellStatus(cell, rowIdx, cellIdx, originalBoard));
+}
+
+export function getUpdatedBoard(originalBoard: Board) {
+  return originalBoard.map((row, rowIdx) => getUpdatedRow(row, rowIdx, originalBoard));
 }
 
 export function getEmptyBoard(size: number): Board {
