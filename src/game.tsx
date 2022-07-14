@@ -4,8 +4,8 @@ import {
   getEmptyBoard, randomizeRow, Board, getUpdatedBoard,
 } from './game-logic';
 
-const BOARD_SIZE = 200;
-const UPDATE_EVERY_X_MS = 3;
+const BOARD_SIZE = 100;
+const UPDATE_EVERY_X_MS = 42;
 
 const INITIAL_BOARD = () => getEmptyBoard(BOARD_SIZE).map(randomizeRow);
 
@@ -26,7 +26,9 @@ export function Game() {
     function gameLoop(time: number) {
       const delta = time - currentTime;
       if (delta >= UPDATE_EVERY_X_MS) {
-        setBoard((b) => getUpdatedBoard(b));
+        setTimeout(() => {
+          setBoard((b) => getUpdatedBoard(b));
+        }, 0);
         currentTime = time;
       }
       animationFrameRef.current = requestAnimationFrame(gameLoop);

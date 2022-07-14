@@ -2,6 +2,10 @@ html, body, #root {
     height: 100%;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
 }
@@ -13,12 +17,26 @@ body {
     align-items: center;
 }
 
+.game-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 6px solid black;
+}
+
+.game-row {
+}
+
 .game-cell {
-    height: 3px;
-    width: 3px;
+    height: 6px;
+    width: 6px;
     background-color: white;
 }
 
 .game-cell.alive {
     background-color: black;
+}
+
+.game-cell:hover {
+    background-color: violet;
 }
