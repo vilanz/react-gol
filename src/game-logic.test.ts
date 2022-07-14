@@ -3,20 +3,20 @@ import { getUpdatedBoard } from './game-logic';
 describe('still life (stays the same forever)', () => {
   test('4x4 block', () => {
     const cells = [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
+      [false, false, false, false],
+      [false, true, true, false],
+      [false, true, true, false],
+      [false, false, false, false],
     ];
     expect(getUpdatedBoard(cells)).toEqual(cells);
   });
   test('beehive', () => {
     const cells = [
-      [0, 0, 0, 0, 0, 0],
-      [0, 0, 1, 1, 0, 0],
-      [0, 1, 0, 0, 1, 0],
-      [0, 0, 1, 1, 0, 0],
-      [0, 0, 0, 0, 0, 0],
+      [false, false, false, false, false, false],
+      [false, false, true, true, false, false],
+      [false, true, false, false, true, false],
+      [false, false, true, true, false, false],
+      [false, false, false, false, false, false],
     ];
     expect(getUpdatedBoard(cells)).toEqual(cells);
   });
@@ -25,18 +25,18 @@ describe('still life (stays the same forever)', () => {
 describe('oscillating life', () => {
   test('line', () => {
     const stateOne = [
-      [0, 0, 0, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 0, 0, 0],
+      [false, false, false, false, false],
+      [false, false, true, false, false],
+      [false, false, true, false, false],
+      [false, false, true, false, false],
+      [false, false, false, false, false],
     ];
     const stateTwo = [
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
-      [0, 1, 1, 1, 0],
-      [0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
+      [false, true, true, true, false],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
     ];
 
     const firstTick = getUpdatedBoard(stateOne);

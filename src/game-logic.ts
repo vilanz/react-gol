@@ -1,33 +1,38 @@
-import structuredClone from '@ungap/structured-clone';
-
-export type BoardCell = number;
+export type BoardCell = boolean;
 export type BoardRow = BoardCell[];
 export type Board = BoardRow[];
 
-function getLiveNeighourCount(rowIndex: number, colIndex: number, board: Board) {
+function getCountOfLiveNeighours(row: number, col: number, board: Board) {
   const neighbours = [
-    [rowIndex - 1, colIndex - 1], [rowIndex - 1, colIndex], [rowIndex - 1, colIndex + 1],
-    [rowIndex, colIndex - 1], [rowIndex, colIndex + 1],
-    [rowIndex + 1, colIndex - 1], [rowIndex + 1, colIndex], [rowIndex + 1, colIndex + 1],
+    [row - 1, col - 1], [row - 1, col], [row - 1, col + 1],
+    [row, col - 1], [row, col + 1],
+    [row + 1, col - 1], [row + 1, col], [row + 1, col + 1],
   ];
-  const liveNeighbours = neighbours.filter(([x, y]) => board[x] && board[x][y]);
+  const liveNeighbours = neighbours.filter(([r, c]) => board[r] && board[r][c]);
   return liveNeighbours.length;
 }
 
-function getCellStatus(cell: BoardCell, rowIndex: number, colIndex: number, board: Board): number {
-  const neighbourCount = getLiveNeighourCount(rowIndex, colIndex, board);
-  const alive = cell
-    ? neighbourCount === 2 || neighbourCount === 3
-    : neighbourCount === 3;
-  return alive ? 1 : 0;
+function isCellNowAlive(
+  row: number,
+  col: number,
+  board: Board,
+): BoardCell {
+  const wasAlive = board[row][col];
+  const liveNeighbourCount = getCountOfLiveNeighours(row, col, board);
+  return wasAlive
+    ? liveNeighbourCount === 2 || liveNeighbourCount === 3
+    : liveNeighbourCount === 3;
 }
 
-function getUpdatedRow(row: BoardRow, rowIdx: number, originalBoard: Board): BoardRow {
-  return row.map((cell, cellIdx) => getCellStatus(cell, rowIdx, cellIdx, originalBoard));
-}
-
-export function getUpdatedBoard(originalBoard: Board) {
-  return originalBoard.map((row, rowIdx) => getUpdatedRow(row, rowIdx, originalBoard));
+export function getUpdatedBoard(board: Board): Board {
+  const newBoard: Board = [];
+  for (let row = 0; row < board.length; row++) {
+    newBoard[row] = [];
+    for (let col = 0; col < board[row].length; col++) {
+      newBoard[row][col] = isCellNowAlive(row, col, board);
+    }
+  }
+  return newBoard;
 }
 
 export function getEmptyBoard(size: number): Board {
@@ -38,5 +43,5 @@ export function getEmptyBoard(size: number): Board {
 }
 
 export function randomizeRow(row: BoardRow): BoardRow {
-  return row.map(() => (Math.random() > 0.5 ? 1 : 0));
+  return row.map(() => (Math.random() > 0.5));
 }

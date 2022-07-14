@@ -1,12 +1,11 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { GameRow } from './board';
+import { GameBoard } from './board';
 import {
   getEmptyBoard, randomizeRow, Board, getUpdatedBoard,
 } from './game-logic';
 
-const BOARD_SIZE = 300;
-const UPDATE_EVERY_X_MS = 1000;
+const BOARD_SIZE = 200;
+const UPDATE_EVERY_X_MS = 3;
 
 const INITIAL_BOARD = () => getEmptyBoard(BOARD_SIZE).map(randomizeRow);
 
@@ -43,16 +42,8 @@ export function Game() {
   }, []);
 
   return (
-    <TransformWrapper>
-      <TransformComponent>
-        <div>
-          {board.map((row, idx) => (
-            // Row indexes are stable
-            // eslint-disable-next-line react/no-array-index-key
-            <GameRow row={row} key={idx} />
-          ))}
-        </div>
-      </TransformComponent>
-    </TransformWrapper>
+    <div className="board-container">
+      <GameBoard board={board} />
+    </div>
   );
 }

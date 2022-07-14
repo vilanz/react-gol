@@ -23,6 +23,7 @@ module.exports = {
     'import/extensions': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.ts', '.tsx'] }],
     'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
   },
   settings: {
     'import/resolver': {

@@ -1,21 +1,24 @@
+html, body, #root {
+    height: 100%;
+}
+
 body {
     margin: 0;
 }
 
-.game-row {
+.board-container {
+    height: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .game-cell {
-    height: 20px;
-    width: 20px;
-    transition: 'background-color 0.5s ease';
+    height: 3px;
+    width: 3px;
+    background-color: white;
 }
 
 .game-cell.alive {
-    background-color: aqua;
-}
-
-.game-cell.dead {
-    background-color: blueviolet;
+    background-color: black;
 }
