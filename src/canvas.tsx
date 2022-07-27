@@ -5,7 +5,7 @@ import { Board } from './game-logic';
 
 const CELL_SIZE = 5;
 
-export const GameBoard = memo(({ board }: { board: Board }) => {
+export const GameCanvas = memo(({ board }: { board: Board }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvas2dCtx = canvasRef.current?.getContext('2d');
 

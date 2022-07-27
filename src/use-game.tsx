@@ -21,7 +21,7 @@ const useDebouncedValue = <T extends unknown>(value: T, time: number) => {
   return debouncedValue;
 };
 
-export const useBoard = () => {
+export const useGame = () => {
   const [board, setBoard] = useState<Board>(
     getRandomBoard(BOARD_SIZE, INITIAL_RANDOM_BIAS),
   );
@@ -67,10 +67,13 @@ export const useBoard = () => {
     setGeneration(0);
   };
 
+  const speedPercentage = Math.round((currentSpeed / MAX_SPEED) * 100);
+
   return {
     board,
     generation,
     currentSpeed,
+    speedPercentage,
     resetBoard,
     setSpeed,
   };

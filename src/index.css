@@ -1,17 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+html { font-family: 'Press Start 2P', monospace; }
 
 * {
     box-sizing: border-box;
 }
 
-html {
-    font-family: 'Press Start 2P', monospace;
-}
-
 html, body, #root {
     height: 100%;
 }
-
 
 body, h2, p {
     margin: 0;
@@ -33,7 +29,6 @@ button:hover {
     color: white
 }
 
-
 .game-container {
     height: 100%;
     text-align: center;
@@ -44,6 +39,10 @@ button:hover {
     gap: 10px;
 }
 
+.game-container canvas {
+    border: 5px solid black;
+}
+
 .game-tools {
     display: flex;
     align-items: center;
@@ -52,8 +51,4 @@ button:hover {
 
 .game-tools .game-speed {
     width: 50px;
-}
-
-.game-container canvas {
-    border: 5px solid black;
 }
