@@ -6,6 +6,8 @@ export function Game() {
     board, generation, currentSpeed, resetBoard, setSpeed,
   } = useBoard();
 
+  const speedPercentage = Math.round((currentSpeed / MAX_SPEED) * 100);
+
   return (
     <div className="game-container">
       <h2>Game of Life</h2>
@@ -24,7 +26,7 @@ export function Game() {
           value={currentSpeed}
           onChange={(e) => setSpeed(+e.target.value)}
         />
-        {currentSpeed}
+        <span className="game-speed">{speedPercentage}</span>
         <button type="button" onClick={resetBoard}>Reset</button>
       </div>
     </div>

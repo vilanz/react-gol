@@ -18,8 +18,15 @@ export const GameBoard = memo(({ board }: { board: Board }) => {
     }
     for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
       for (let colIdx = 0; colIdx < board[rowIdx].length; colIdx++) {
-        canvas2dCtx.fillStyle = board[rowIdx][colIdx] ? 'black' : 'white';
-        canvas2dCtx.fillRect(colIdx * CELL_SIZE, rowIdx * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        canvas2dCtx.fillStyle = board[rowIdx][colIdx]
+          ? 'black'
+          : 'white';
+        canvas2dCtx.fillRect(
+          colIdx * CELL_SIZE,
+          rowIdx * CELL_SIZE,
+          CELL_SIZE,
+          CELL_SIZE,
+        );
       }
     }
   }, [board, canvas2dCtx]);

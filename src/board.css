@@ -46,9 +46,12 @@ button:hover {
 
 .game-tools {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 10px;
+}
+
+.game-tools .game-speed {
+    width: 50px;
 }
 
 .game-container canvas {
