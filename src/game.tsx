@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { GameBoard } from './board';
 import {
   getEmptyBoard, randomizeRow, Board, getUpdatedBoard,
@@ -18,7 +18,7 @@ export function Game() {
 
   useLayoutEffect(() => {
     if (useEffectCalled.current === true) {
-      return () => {};
+      return () => { };
     }
     useEffectCalled.current = true;
 
@@ -26,10 +26,8 @@ export function Game() {
     function gameLoop(time: number) {
       const delta = time - currentTime;
       if (delta >= UPDATE_EVERY_X_MS) {
-        setTimeout(() => {
-          setBoard((b) => getUpdatedBoard(b));
-        }, 0);
         currentTime = time;
+        setBoard((b) => getUpdatedBoard(b));
       }
       animationFrameRef.current = requestAnimationFrame(gameLoop);
     }

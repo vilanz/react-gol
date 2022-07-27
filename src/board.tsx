@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { BoardCell, BoardRow, Board } from './game-logic';
 
 export const GameCell = memo(({ cell }: { cell: BoardCell }) => <div className={`game-cell ${cell ? 'alive' : ''}`} />);
