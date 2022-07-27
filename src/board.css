@@ -46,23 +46,11 @@ button:hover {
 
 .game-tools {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 10px;
 }
 
-.game-board {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 6px solid black;
-}
-
-.game-cell {
-    height: 6px;
-    width: 6px;
-    background-color: white;
-}
-
-.game-cell.alive {
-    background-color: black;
+.game-container canvas {
+    border: 5px solid black;
 }

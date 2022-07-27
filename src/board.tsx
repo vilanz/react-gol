@@ -1,25 +1,34 @@
-import { memo } from 'react';
-import { BoardCell, BoardRow, Board } from './game-logic';
+import {
+  memo, useEffect, useRef,
+} from 'react';
+import { Board } from './game-logic';
 
-export const GameCell = memo(({ cell }: { cell: BoardCell }) => (
-  <div className={`game-cell${cell ? ' alive' : ''}`} />));
+const CELL_SIZE = 5;
 
-export const GameRow = memo(({ row }: { row: BoardRow }) => (
-  <div className="game-row">
-    {row.map((cell, idx) => (
-      // Cell indexes are stable too
-      // eslint-disable-next-line react/no-array-index-key
-      <GameCell cell={cell} key={idx} />
-    ))}
-  </div>
-));
+export const GameBoard = memo(({ board }: { board: Board }) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvas2dCtx = canvasRef.current?.getContext('2d');
 
-export const GameBoard = memo(({ board }: { board: Board }) => (
-  <div className="game-board">
-    {board.map((row, idx) => (
-      // Row indexes are stable
-      // eslint-disable-next-line react/no-array-index-key
-      <GameRow row={row} key={idx} />
-    ))}
-  </div>
-));
+  // assuming our board is square
+  const canvasSize = board.length * CELL_SIZE;
+
+  useEffect(() => {
+    if (!canvas2dCtx) {
+      return;
+    }
+    for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
+      for (let colIdx = 0; colIdx < board[rowIdx].length; colIdx++) {
+        canvas2dCtx.fillStyle = board[rowIdx][colIdx] ? 'black' : 'white';
+        canvas2dCtx.fillRect(colIdx * CELL_SIZE, rowIdx * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+      }
+    }
+  }, [board, canvas2dCtx]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={canvasSize}
+      height={canvasSize}
+    />
+  );
+});
