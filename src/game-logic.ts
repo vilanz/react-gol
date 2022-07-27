@@ -42,6 +42,7 @@ export function getEmptyBoard(size: number): Board {
   });
 }
 
-export function randomizeRow(row: BoardRow): BoardRow {
-  return row.map(() => (Math.random() > 0.5));
+export function getRandomBoard(size: number, bias: number): Board {
+  return getEmptyBoard(size)
+    .map((row) => row.map(() => (Math.random() > bias)));
 }

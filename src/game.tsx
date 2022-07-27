@@ -1,27 +1,28 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import {
+  useEffect, useRef, useState,
+} from 'react';
 import { GameBoard } from './board';
 import {
-  getEmptyBoard, randomizeRow, Board, getUpdatedBoard,
+  Board, getUpdatedBoard, getRandomBoard,
 } from './game-logic';
 
-const BOARD_SIZE = 100;
-const UPDATE_EVERY_X_MS = 42;
+const BOARD_SIZE = 75;
+const UPDATE_EVERY_X_MS = 120;
+const INITIAL_RANDOM_BIAS = 0.5;
 
-const INITIAL_BOARD = () => getEmptyBoard(BOARD_SIZE).map(randomizeRow);
+const customRandomBoard = () => getRandomBoard(BOARD_SIZE, INITIAL_RANDOM_BIAS);
 
 export function Game() {
-  const useEffectCalled = useRef(false);
   const animationFrameRef = useRef<number | null>(null);
   const [board, setBoard] = useState<Board>(
-    INITIAL_BOARD,
+    customRandomBoard(),
   );
 
-  useLayoutEffect(() => {
-    if (useEffectCalled.current === true) {
-      return () => { };
-    }
-    useEffectCalled.current = true;
+  const resetBoard = () => {
+    setBoard(customRandomBoard());
+  };
 
+  useEffect(() => {
     let currentTime: number = 0;
     function gameLoop(time: number) {
       const delta = time - currentTime;
@@ -43,7 +44,9 @@ export function Game() {
 
   return (
     <div className="board-container">
+      <h2>Game of Life</h2>
       <GameBoard board={board} />
+      <button type="button" onClick={resetBoard}>Reset</button>
     </div>
   );
 }
