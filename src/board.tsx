@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { BoardCell, BoardRow, Board } from './game-logic';
 
 export const GameCell = memo(({ cell }: { cell: BoardCell }) => (
-  <div className={`game-cell ${cell ? 'alive' : ''}`} />));
+  <div className={`game-cell${cell ? ' alive' : ''}`} />));
 
 export const GameRow = memo(({ row }: { row: BoardRow }) => (
   <div className="game-row">

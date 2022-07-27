@@ -1,18 +1,35 @@
 import { GameBoard } from './board';
-import { useBoard } from './use-board';
+import { MAX_SPEED, MIN_SPEED, useBoard } from './use-board';
 
 export function Game() {
-  const { board, generation, resetBoard } = useBoard();
+  const {
+    board, generation, currentSpeed, resetBoard, setSpeed,
+  } = useBoard();
+
   return (
-    <div className="board-container">
+    <div className="game-container">
       <h2>Game of Life</h2>
-      <GameBoard board={board} />
       <p>
         Generation:
         {' '}
         {generation}
       </p>
-      <button type="button" onClick={resetBoard}>Reset</button>
+      <GameBoard board={board} />
+      <div className="game-tools">
+        <div>
+          Speed:
+          {' '}
+          {currentSpeed}
+          <input
+            type="range"
+            min={MIN_SPEED}
+            max={MAX_SPEED}
+            value={currentSpeed}
+            onChange={(e) => setSpeed(+e.target.value)}
+          />
+        </div>
+        <button type="button" onClick={resetBoard}>Reset</button>
+      </div>
     </div>
   );
 }
