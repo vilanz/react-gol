@@ -60,10 +60,14 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case "HOVER_POINT":
       return { ...state, hoverPoint: action.payload };
     case "DRAW_POINT":
-      const { x, y, erase } = action.payload;
       return {
         ...state,
-        board: drawPointInBoard(state.board, x, y, erase),
+        board: drawPointInBoard(
+          state.board,
+          action.payload.x,
+          action.payload.y,
+          action.payload.erase
+        ),
       };
   }
 }

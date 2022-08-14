@@ -10,7 +10,7 @@ export function GameInfo({ state }: { state: GameState }) {
       {!userHasStarted ? (
         <div>
           <p>Draw cells by clicking {IS_DESKTOP ? "and holding" : null}.</p>
-          <p>Run GoL with the "Start" button below.</p>
+          <p>Run GoL with the &quot;Start&quot; button below.</p>
         </div>
       ) : null}
     </div>
