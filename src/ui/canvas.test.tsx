@@ -1,4 +1,4 @@
-import { getMouseEventCell } from "./";
+import { getMouseEventCell } from "./canvas";
 
 it.each([
   [0, 0, [0, 0]],
