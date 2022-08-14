@@ -1,4 +1,4 @@
-import { Reducer, useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import {
   Board,
   getEmptyBoard,
@@ -24,6 +24,7 @@ interface GameState {
 type GameAction =
   | { type: "UPDATE_BOARD" }
   | { type: "RESET_BOARD" }
+  | { type: "TOGGLE_RUNNING" }
   | { type: "SET_SPEED"; payload: number };
 
 const INITIAL_STATE: GameState = {
@@ -48,6 +49,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         currentSpeed: action.payload,
       };
+    case "TOGGLE_RUNNING":
+      return {
+        ...state,
+        isRunning: !state.isRunning,
+      };
   }
 }
 
@@ -59,6 +65,9 @@ export const useGame = () => {
 
   const animationFrameRef = useRef<number | null>(null);
   useEffect(() => {
+    if (!isRunning) {
+      return;
+    }
     let currentTime: number = 0;
     function gameLoop(time: number) {
       const delta = time - currentTime;
@@ -81,7 +90,7 @@ export const useGame = () => {
         animationFrameRef.current = null;
       }
     };
-  }, [debouncedSpeed]);
+  }, [debouncedSpeed, isRunning]);
 
   const setSpeed = (speed: number) => {
     if (speed < MIN_SPEED || speed > MAX_SPEED) {
@@ -99,12 +108,20 @@ export const useGame = () => {
     });
   };
 
+  const toggleRunning = () => {
+    dispatch({
+      type: "TOGGLE_RUNNING",
+    });
+  };
+
   const speedPercentage = Math.round((currentSpeed / MAX_SPEED) * 100);
 
   return {
     board,
     generation,
     currentSpeed,
+    isRunning,
+    toggleRunning,
     speedPercentage,
     resetBoard,
     setSpeed,

@@ -1,7 +1,7 @@
-import ReactDOM from 'react-dom/client';
-import { GameCanvas } from './canvas';
-import { MAX_SPEED, MIN_SPEED, useGame } from './use-game';
-import './index.css';
+import ReactDOM from "react-dom/client";
+import { GameCanvas } from "./canvas";
+import { MAX_SPEED, MIN_SPEED, useGame } from "./use-game";
+import "./index.css";
 
 function GameOfLife() {
   const {
@@ -11,16 +11,14 @@ function GameOfLife() {
     speedPercentage,
     resetBoard,
     setSpeed,
+    isRunning,
+    toggleRunning,
   } = useGame();
 
   return (
     <div className="game-container">
       <h2>Game of Life</h2>
-      <p>
-        Generation:
-        {' '}
-        {generation}
-      </p>
+      <p>Generation: {generation}</p>
       <GameCanvas board={board} />
       <div className="game-tools">
         Speed
@@ -32,13 +30,16 @@ function GameOfLife() {
           onChange={(e) => setSpeed(+e.target.value)}
         />
         <span className="game-speed">{speedPercentage}</span>
-        <button type="button" onClick={resetBoard}>Reset</button>
+        <button type="button" onClick={resetBoard}>
+          Reset
+        </button>
+        <button type="button" onClick={toggleRunning}>
+          {isRunning ? "Stop" : "Start"}
+        </button>
       </div>
     </div>
   );
 }
 
-const rootElement = document.getElementById('root')!;
-ReactDOM
-  .createRoot(rootElement)
-  .render(<GameOfLife />);
+const rootElement = document.getElementById("root")!;
+ReactDOM.createRoot(rootElement).render(<GameOfLife />);
