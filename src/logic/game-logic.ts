@@ -53,7 +53,8 @@ export function getEmptyBoard(size: number): Board {
 export function getBoardWithNewPoint(
   board: Board,
   x: number,
-  y: number
+  y: number,
+  erase: boolean
 ): Board {
   const newBoard: Board = [];
   for (let row = 0; row < board.length; row++) {
@@ -62,6 +63,6 @@ export function getBoardWithNewPoint(
       newBoard[row][col] = board[row][col];
     }
   }
-  newBoard[y][x] = !newBoard[y][x];
+  newBoard[y][x] = !erase;
   return newBoard;
 }

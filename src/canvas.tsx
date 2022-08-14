@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef } from "react";
 import { Board } from "./logic/game-logic";
+import { getReffedValue } from "./utils";
 
 const CELL_SIZE = 8;
 
@@ -12,17 +13,16 @@ export function getMouseEventCell(clickX: number, clickY: number) {
 export const GameCanvas = memo(
   ({
     board,
+    hoverPoint,
     onDraw,
+    onHover,
   }: {
     board: Board;
-    onDraw: (x: number, y: number) => void;
+    hoverPoint: null | [number, number];
+    onDraw: (x: number, y: number, erase: boolean) => void;
+    onHover: (x: number, y: number) => void;
   }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-    const onDrawRef = useRef(onDraw);
-    useEffect(() => {
-      onDrawRef.current = onDraw;
-    }, [onDraw]);
 
     // assuming our board is square
     const canvasSize = board.length * CELL_SIZE;
@@ -32,66 +32,53 @@ export const GameCanvas = memo(
       if (!canvas2dCtx) {
         return;
       }
-      for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
-        for (let colIdx = 0; colIdx < board[rowIdx].length; colIdx++) {
-          canvas2dCtx.fillStyle = board[rowIdx][colIdx] ? "black" : "white";
+      for (let y = 0; y < board.length; y++) {
+        for (let x = 0; x < board[y].length; x++) {
+          const isHovering = hoverPoint
+            ? hoverPoint[0] === x && hoverPoint[1] === y
+            : false;
+          if (isHovering) {
+            canvas2dCtx.fillStyle = "pink";
+          } else {
+            canvas2dCtx.fillStyle = board[y][x] ? "black" : "white";
+          }
           canvas2dCtx.fillRect(
-            colIdx * CELL_SIZE,
-            rowIdx * CELL_SIZE,
+            x * CELL_SIZE,
+            y * CELL_SIZE,
             CELL_SIZE,
             CELL_SIZE
           );
         }
       }
-    }, [board]);
+    }, [board, hoverPoint]);
 
-    const latestMousemove = useRef({ x: 0, y: 0, wasAlive: false });
+    const onDrawRef = getReffedValue(onDraw);
+    const onHoverRef = getReffedValue(onHover);
+    const boardRef = getReffedValue(board);
+
     const holdingClick = useRef(false);
+    const startedHoldingFromLiveCell = useRef(false);
     useEffect(() => {
       const canvas2dCtx = canvasRef.current?.getContext("2d");
-      if (!canvasRef.current || !canvas2dCtx) {
+      if (!canvas2dCtx) {
         return;
       }
       canvasRef.current?.addEventListener("mousedown", (e) => {
         holdingClick.current = !holdingClick.current;
+        const [eqX, eqY] = getMouseEventCell(e.offsetX, e.offsetY);
+        const erase = boardRef.current?.[eqY]?.[eqX];
+        onDrawRef.current?.(eqX, eqY, erase);
+        startedHoldingFromLiveCell.current = erase;
       });
       canvasRef.current?.addEventListener("mouseup", (e) => {
         holdingClick.current = !holdingClick.current;
       });
       canvasRef.current?.addEventListener("mousemove", (e) => {
-        const latestMousemoveCurrent = latestMousemove.current;
         const [eqX, eqY] = getMouseEventCell(e.offsetX, e.offsetY);
-        if (
-          eqX === latestMousemoveCurrent.x &&
-          eqY === latestMousemoveCurrent.y
-        ) {
-          return;
-        }
-        const isAlive = board[eqY][eqX];
-        latestMousemove.current = {
-          x: eqX,
-          y: eqY,
-          wasAlive: isAlive,
-        };
+        onHoverRef.current?.(eqX, eqY);
         if (holdingClick.current) {
-          onDrawRef.current?.(eqX, eqY);
-        } else {
-          canvas2dCtx.fillStyle = latestMousemoveCurrent.wasAlive
-            ? "black"
-            : "white";
-          canvas2dCtx.fillRect(
-            latestMousemoveCurrent.x * CELL_SIZE,
-            latestMousemoveCurrent.y * CELL_SIZE,
-            CELL_SIZE,
-            CELL_SIZE
-          );
-          canvas2dCtx.fillStyle = "pink";
-          canvas2dCtx.fillRect(
-            eqX * CELL_SIZE,
-            eqY * CELL_SIZE,
-            CELL_SIZE,
-            CELL_SIZE
-          );
+          const erase = startedHoldingFromLiveCell.current;
+          onDrawRef.current?.(eqX, eqY, erase);
         }
       });
     }, []);

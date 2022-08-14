@@ -16,6 +16,7 @@ interface GameState {
   board: Board;
   generation: number;
   currentSpeed: number;
+  hoverPoint: null | [number, number];
   isRunning: boolean;
 }
 
@@ -24,12 +25,14 @@ type GameAction =
   | { type: "RESET_BOARD" }
   | { type: "TOGGLE_RUNNING" }
   | { type: "SET_SPEED"; payload: number }
-  | { type: "DRAW_POINT"; payload: [number, number] };
+  | { type: "HOVER_POINT"; payload: null | [number, number] }
+  | { type: "DRAW_POINT"; payload: { x: number; y: number; erase: boolean } };
 
 const INITIAL_STATE: GameState = {
   board: getEmptyBoard(BOARD_SIZE),
   generation: 0,
   currentSpeed: DEFAULT_SPEED,
+  hoverPoint: null,
   isRunning: false,
 };
 
@@ -53,15 +56,20 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         isRunning: !state.isRunning,
       };
+    case "HOVER_POINT":
+      return { ...state, hoverPoint: action.payload };
     case "DRAW_POINT":
-      const [x, y] = action.payload;
-      return { ...state, board: getBoardWithNewPoint(state.board, x, y) };
+      const { x, y, erase } = action.payload;
+      return {
+        ...state,
+        board: getBoardWithNewPoint(state.board, x, y, erase),
+      };
   }
 }
 
 export const useGame = () => {
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
-  const { board, currentSpeed, generation, isRunning } = state;
+  const { board, currentSpeed, generation, isRunning, hoverPoint } = state;
 
   const debouncedSpeed = useDebouncedValue(currentSpeed, 50);
 
@@ -116,9 +124,16 @@ export const useGame = () => {
     });
   };
 
-  const drawPoint = (x: number, y: number) => {
+  const drawPoint = (x: number, y: number, erase: boolean) => {
     dispatch({
       type: "DRAW_POINT",
+      payload: { x, y, erase },
+    });
+  };
+
+  const onHover = (x: number, y: number) => {
+    dispatch({
+      type: "HOVER_POINT",
       payload: [x, y],
     });
   };
@@ -135,5 +150,7 @@ export const useGame = () => {
     resetBoard,
     setSpeed,
     drawPoint,
+    hoverPoint,
+    onHover,
   };
 };
