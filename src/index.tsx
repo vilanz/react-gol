@@ -13,13 +13,14 @@ function GameOfLife() {
     setSpeed,
     isRunning,
     toggleRunning,
+    drawPoint,
   } = useGame();
 
   return (
     <div className="game-container">
       <h2>Game of Life</h2>
       <p>Generation: {generation}</p>
-      <GameCanvas board={board} />
+      <GameCanvas board={board} onDraw={drawPoint} />
       <div className="game-tools">
         Speed
         <input

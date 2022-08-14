@@ -50,6 +50,18 @@ export function getEmptyBoard(size: number): Board {
     });
 }
 
-export function getRandomBoard(size: number, bias: number): Board {
-  return getEmptyBoard(size).map((row) => row.map(() => Math.random() > bias));
+export function getBoardWithNewPoint(
+  board: Board,
+  x: number,
+  y: number
+): Board {
+  const newBoard: Board = [];
+  for (let row = 0; row < board.length; row++) {
+    newBoard[row] = [];
+    for (let col = 0; col < board[row].length; col++) {
+      newBoard[row][col] = board[row][col];
+    }
+  }
+  newBoard[y][x] = !newBoard[y][x];
+  return newBoard;
 }

@@ -1,15 +1,13 @@
 import { useEffect, useReducer, useRef } from "react";
 import {
   Board,
+  getBoardWithNewPoint,
   getEmptyBoard,
-  getRandomBoard,
   getUpdatedBoard,
 } from "./logic/game-logic";
 import { useDebouncedValue } from "./utils";
 
 const BOARD_SIZE = 75;
-const INITIAL_RANDOM_BIAS = 0.5;
-
 export const MIN_SPEED = 0;
 export const MAX_SPEED = 90;
 const DEFAULT_SPEED = 81;
@@ -25,13 +23,14 @@ type GameAction =
   | { type: "UPDATE_BOARD" }
   | { type: "RESET_BOARD" }
   | { type: "TOGGLE_RUNNING" }
-  | { type: "SET_SPEED"; payload: number };
+  | { type: "SET_SPEED"; payload: number }
+  | { type: "DRAW_POINT"; payload: [number, number] };
 
 const INITIAL_STATE: GameState = {
-  board: getRandomBoard(BOARD_SIZE, INITIAL_RANDOM_BIAS),
+  board: getEmptyBoard(BOARD_SIZE),
   generation: 0,
   currentSpeed: DEFAULT_SPEED,
-  isRunning: true,
+  isRunning: false,
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -54,6 +53,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         isRunning: !state.isRunning,
       };
+    case "DRAW_POINT":
+      const [x, y] = action.payload;
+      return { ...state, board: getBoardWithNewPoint(state.board, x, y) };
   }
 }
 
@@ -114,6 +116,13 @@ export const useGame = () => {
     });
   };
 
+  const drawPoint = (x: number, y: number) => {
+    dispatch({
+      type: "DRAW_POINT",
+      payload: [x, y],
+    });
+  };
+
   const speedPercentage = Math.round((currentSpeed / MAX_SPEED) * 100);
 
   return {
@@ -125,5 +134,6 @@ export const useGame = () => {
     speedPercentage,
     resetBoard,
     setSpeed,
+    drawPoint,
   };
 };

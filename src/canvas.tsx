@@ -3,29 +3,55 @@ import { Board } from "./logic/game-logic";
 
 const CELL_SIZE = 5;
 
-export const GameCanvas = memo(({ board }: { board: Board }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const canvas2dCtx = canvasRef.current?.getContext("2d");
+export function getClickPosition(clickX: number, clickY: number) {
+  const x = Math.floor(clickX / CELL_SIZE);
+  const y = Math.floor(clickY / CELL_SIZE);
+  return [x, y];
+}
 
-  // assuming our board is square
-  const canvasSize = board.length * CELL_SIZE;
+export const GameCanvas = memo(
+  ({
+    board,
+    onDraw,
+  }: {
+    board: Board;
+    onDraw: (x: number, y: number) => void;
+  }) => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const canvas2dCtx = canvasRef.current?.getContext("2d");
 
-  useEffect(() => {
-    if (!canvas2dCtx) {
-      return;
-    }
-    for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
-      for (let colIdx = 0; colIdx < board[rowIdx].length; colIdx++) {
-        canvas2dCtx.fillStyle = board[rowIdx][colIdx] ? "black" : "white";
-        canvas2dCtx.fillRect(
-          colIdx * CELL_SIZE,
-          rowIdx * CELL_SIZE,
-          CELL_SIZE,
-          CELL_SIZE
-        );
+    const onDrawRef = useRef(onDraw);
+    useEffect(() => {
+      onDrawRef.current = onDraw;
+    }, [onDraw]);
+
+    // assuming our board is square
+    const canvasSize = board.length * CELL_SIZE;
+
+    useEffect(() => {
+      if (!canvas2dCtx) {
+        return;
       }
-    }
-  }, [board, canvas2dCtx]);
+      for (let rowIdx = 0; rowIdx < board.length; rowIdx++) {
+        for (let colIdx = 0; colIdx < board[rowIdx].length; colIdx++) {
+          canvas2dCtx.fillStyle = board[rowIdx][colIdx] ? "black" : "white";
+          canvas2dCtx.fillRect(
+            colIdx * CELL_SIZE,
+            rowIdx * CELL_SIZE,
+            CELL_SIZE,
+            CELL_SIZE
+          );
+        }
+      }
+    }, [board, canvas2dCtx]);
 
-  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
-});
+    useEffect(() => {
+      canvasRef.current?.addEventListener("click", (e) => {
+        const [eqX, eqY] = getClickPosition(e.offsetX, e.offsetY);
+        onDrawRef.current?.(eqX, eqY);
+      });
+    }, []);
+
+    return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
+  }
+);
