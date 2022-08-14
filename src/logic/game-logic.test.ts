@@ -1,7 +1,7 @@
-import { getUpdatedBoard } from './game-logic';
+import { getUpdatedBoard } from "./game-logic";
 
-describe('still life (stays the same forever)', () => {
-  test('4x4 block', () => {
+describe("still life (stays the same forever)", () => {
+  test("4x4 block", () => {
     const cells = [
       [false, false, false, false],
       [false, true, true, false],
@@ -10,7 +10,7 @@ describe('still life (stays the same forever)', () => {
     ];
     expect(getUpdatedBoard(cells)).toEqual(cells);
   });
-  test('beehive', () => {
+  test("beehive", () => {
     const cells = [
       [false, false, false, false, false, false],
       [false, false, true, true, false, false],
@@ -22,8 +22,8 @@ describe('still life (stays the same forever)', () => {
   });
 });
 
-describe('oscillating life', () => {
-  test('line', () => {
+describe("oscillating life", () => {
+  test("line", () => {
     const stateOne = [
       [false, false, false, false, false],
       [false, false, true, false, false],

@@ -3,20 +3,26 @@ export type BoardRow = BoardCell[];
 export type Board = BoardRow[];
 
 function getCountOfLiveNeighours(row: number, col: number, board: Board) {
-  const neighbours = [
-    [row - 1, col - 1], [row - 1, col], [row - 1, col + 1],
-    [row, col - 1], [row, col + 1],
-    [row + 1, col - 1], [row + 1, col], [row + 1, col + 1],
-  ];
-  const liveNeighbours = neighbours.filter(([r, c]) => board[r] && board[r][c]);
-  return liveNeighbours.length;
+  let count = 0;
+
+  // iterate over all 8 neighbours' positions
+  for (let x = row - 1; x <= row + 1; x++) {
+    for (let y = col - 1; y <= col + 1; y++) {
+      if (x === row && col === y) {
+        // ignore our own position, of course
+        continue;
+      }
+      const isNeighbourAlive = board?.[x]?.[y];
+      if (isNeighbourAlive) {
+        count++;
+      }
+    }
+  }
+
+  return count;
 }
 
-function isCellNowAlive(
-  row: number,
-  col: number,
-  board: Board,
-): BoardCell {
+function isCellNowAlive(row: number, col: number, board: Board): BoardCell {
   const wasAlive = board[row][col];
   const liveNeighbourCount = getCountOfLiveNeighours(row, col, board);
   return wasAlive
@@ -36,13 +42,14 @@ export function getUpdatedBoard(board: Board): Board {
 }
 
 export function getEmptyBoard(size: number): Board {
-  return Array(size).fill([]).map(() => {
-    const emptyRow = Array(size).fill(0);
-    return emptyRow;
-  });
+  return Array(size)
+    .fill([])
+    .map(() => {
+      const emptyRow = Array(size).fill(0);
+      return emptyRow;
+    });
 }
 
 export function getRandomBoard(size: number, bias: number): Board {
-  return getEmptyBoard(size)
-    .map((row) => row.map(() => (Math.random() > bias)));
+  return getEmptyBoard(size).map((row) => row.map(() => Math.random() > bias));
 }

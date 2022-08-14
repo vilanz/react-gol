@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Board, getRandomBoard, getUpdatedBoard } from './game-logic';
+import { useEffect, useRef, useState } from "react";
+import { Board, getRandomBoard, getUpdatedBoard } from "./logic/game-logic";
 
 const BOARD_SIZE = 75;
 const INITIAL_RANDOM_BIAS = 0.5;
@@ -23,7 +23,7 @@ const useDebouncedValue = <T extends unknown>(value: T, time: number) => {
 
 export const useGame = () => {
   const [board, setBoard] = useState<Board>(
-    getRandomBoard(BOARD_SIZE, INITIAL_RANDOM_BIAS),
+    getRandomBoard(BOARD_SIZE, INITIAL_RANDOM_BIAS)
   );
   const [generation, setGeneration] = useState(0);
 
@@ -35,7 +35,7 @@ export const useGame = () => {
     let currentTime: number = 0;
     function gameLoop(time: number) {
       const delta = time - currentTime;
-      const updateAtXMs = (1000 * ((100 - debouncedSpeed) / 100));
+      const updateAtXMs = 1000 * ((100 - debouncedSpeed) / 100);
       if (debouncedSpeed > 0 && delta >= updateAtXMs) {
         currentTime = time;
         setBoard((b) => getUpdatedBoard(b));
