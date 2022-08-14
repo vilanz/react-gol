@@ -13,7 +13,7 @@ export interface GameState {
   currentSpeed: number;
   hoverPoint: null | { x: number; y: number };
   isRunning: boolean;
-  userHasDrawn: boolean;
+  userHasStarted: boolean;
 }
 export const INITIAL_STATE: GameState = {
   board: createEmptyBoard(BOARD_WIDTH, BOARD_HEIGHT),
@@ -21,7 +21,7 @@ export const INITIAL_STATE: GameState = {
   currentSpeed: DEFAULT_SPEED,
   hoverPoint: null,
   isRunning: false,
-  userHasDrawn: false,
+  userHasStarted: false,
 };
 
 export type GameAction =
@@ -30,8 +30,7 @@ export type GameAction =
   | { type: "TOGGLE_RUNNING" }
   | { type: "SET_SPEED"; payload: number }
   | { type: "HOVER_POINT"; payload: { x: number; y: number } }
-  | { type: "DRAW_POINT"; payload: { x: number; y: number; erase: boolean } }
-  | { type: "USER_FINALLY_DREW_SOMETHING" };
+  | { type: "DRAW_POINT"; payload: { x: number; y: number; erase: boolean } };
 export type GameDispatch = Dispatch<GameAction>;
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
@@ -43,7 +42,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         generation: state.generation + 1,
       };
     case "RESET_BOARD":
-      return INITIAL_STATE;
+      return {
+        ...INITIAL_STATE,
+        userHasStarted: state.userHasStarted,
+      };
     case "SET_SPEED":
       return {
         ...state,
@@ -53,6 +55,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         isRunning: !state.isRunning,
+        userHasStarted: true,
       };
     case "HOVER_POINT":
       return { ...state, hoverPoint: action.payload };
@@ -61,11 +64,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         board: drawPointInBoard(state.board, x, y, erase),
-      };
-    case "USER_FINALLY_DREW_SOMETHING":
-      return {
-        ...state,
-        userHasDrawn: true,
       };
   }
 }

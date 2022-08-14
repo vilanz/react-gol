@@ -25,7 +25,7 @@ export function drawPointInBoard(
   return newBoard;
 }
 
-function getCountOfLiveNeighours(x: number, y: number, board: Board) {
+function getLiveNeighbourCount(x: number, y: number, board: Board) {
   let count = 0;
 
   // iterate over all 8 neighbours' positions
@@ -51,7 +51,7 @@ function getCountOfLiveNeighours(x: number, y: number, board: Board) {
 
 function isCellNowAlive(x: number, y: number, board: Board): BoardCell {
   const wasAlive = board[y][x];
-  const liveNeighbourCount = getCountOfLiveNeighours(x, y, board);
+  const liveNeighbourCount = getLiveNeighbourCount(x, y, board);
   return wasAlive
     ? liveNeighbourCount === 2 || liveNeighbourCount === 3
     : liveNeighbourCount === 3;
