@@ -2,13 +2,10 @@ export type BoardCell = boolean;
 export type BoardRow = BoardCell[];
 export type Board = BoardRow[];
 
-export function createEmptyBoard(size: number): Board {
-  return Array(size)
+export function createEmptyBoard(width: number, height: number): Board {
+  return Array(height)
     .fill([])
-    .map(() => {
-      const emptyRow = Array(size).fill(0);
-      return emptyRow;
-    });
+    .map(() => Array(width).fill(0));
 }
 
 export function drawPointInBoard(

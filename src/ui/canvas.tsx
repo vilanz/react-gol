@@ -1,5 +1,11 @@
 import { useEffect, useRef } from "react";
-import { CELL_COLORS, CELL_SIZE } from "../defaults";
+import {
+  BOARD_HEIGHT,
+  BOARD_WIDTH,
+  CELL_COLORS,
+  CELL_SIZE,
+  IS_DESKTOP,
+} from "../defaults";
 import { Board } from "../logic";
 import { GameDispatch, GameState } from "../reducer";
 import { getReffedValue } from "../utils";
@@ -11,7 +17,8 @@ export function getMouseEventCell(
 ) {
   const x = Math.floor((clickX + 1) / CELL_SIZE);
   const y = Math.floor((clickY + 1) / CELL_SIZE);
-  if (x >= board.length || y >= board.length || x < 0 || y < 0) {
+  console.log(x, y, board);
+  if (x >= board[0].length || y >= board.length || x < 0 || y < 0) {
     return null;
   }
   return { x, y };
@@ -26,9 +33,6 @@ export function GameCanvas({
 }) {
   const { board, hoverPoint, userHasDrawn } = state;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  // assuming our board is square
-  const canvasSize = state.board.length * CELL_SIZE;
 
   useEffect(() => {
     const canvas2dCtx = canvasRef.current?.getContext("2d");
@@ -97,13 +101,15 @@ export function GameCanvas({
       if (!cell) {
         return;
       }
-      dispatch({
-        type: "HOVER_POINT",
-        payload: {
-          x: cell.x,
-          y: cell.y,
-        },
-      });
+      if (IS_DESKTOP) {
+        dispatch({
+          type: "HOVER_POINT",
+          payload: {
+            x: cell.x,
+            y: cell.y,
+          },
+        });
+      }
       if (isHoldingClick.current) {
         const erase = willBeErasing.current;
         dispatch({
@@ -118,5 +124,11 @@ export function GameCanvas({
     });
   }, []);
 
-  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      width={BOARD_WIDTH * CELL_SIZE}
+      height={BOARD_HEIGHT * CELL_SIZE}
+    />
+  );
 }

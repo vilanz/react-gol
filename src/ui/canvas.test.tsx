@@ -10,7 +10,7 @@ it.each([
 ])(
   "should return the appropriate cell for a click on %i/%i",
   (x, y, expected) => {
-    expect(getMouseEventCell(x, y, createEmptyBoard(10))).toEqual({
+    expect(getMouseEventCell(x, y, createEmptyBoard(10, 10))).toEqual({
       x: expected[0],
       y: expected[1],
     });
@@ -22,6 +22,6 @@ it.each([
   [0, CELL_SIZE * 3],
   [CELL_SIZE * 3, CELL_SIZE * 2],
 ])("should ignore events outside the board", (x, y) => {
-  const board = createEmptyBoard(2);
+  const board = createEmptyBoard(2, 2);
   expect(getMouseEventCell(x, y, board)).toBeNull();
 });

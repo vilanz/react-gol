@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { BOARD_SIZE, DEFAULT_SPEED } from "./defaults";
+import { BOARD_HEIGHT, BOARD_WIDTH, DEFAULT_SPEED } from "./defaults";
 import {
   Board,
   drawPointInBoard,
@@ -16,7 +16,7 @@ export interface GameState {
   userHasDrawn: boolean;
 }
 export const INITIAL_STATE: GameState = {
-  board: createEmptyBoard(BOARD_SIZE),
+  board: createEmptyBoard(BOARD_WIDTH, BOARD_HEIGHT),
   generation: 0,
   currentSpeed: DEFAULT_SPEED,
   hoverPoint: null,
