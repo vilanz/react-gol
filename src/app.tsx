@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import ReactDOM from "react-dom/client";
 import { gameReducer, INITIAL_STATE } from "./reducer";
-import { GameCanvas, GameTools, useGameLoop, GameInfo } from "./ui";
+import { GameCanvas, GameTools, useGameLoop, GameInfo, GitHubLink } from "./ui";
 
 function GameOfLife() {
   // poor man's Redux - TODO substitute by redux-toolkit later
@@ -15,6 +15,7 @@ function GameOfLife() {
       <GameCanvas state={state} dispatch={dispatch} />
       <GameInfo state={state} />
       <GameTools state={state} dispatch={dispatch} />
+      <GitHubLink />
     </div>
   );
 }
