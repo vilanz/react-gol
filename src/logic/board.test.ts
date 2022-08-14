@@ -1,4 +1,4 @@
-import { getUpdatedBoard } from ".";
+import { getNextGeneration } from ".";
 
 describe("still life (stays the same forever)", () => {
   test("4x4 block", () => {
@@ -8,7 +8,7 @@ describe("still life (stays the same forever)", () => {
       [false, true, true, false],
       [false, false, false, false],
     ];
-    expect(getUpdatedBoard(cells)).toEqual(cells);
+    expect(getNextGeneration(cells)).toEqual(cells);
   });
   test("beehive", () => {
     const cells = [
@@ -18,7 +18,7 @@ describe("still life (stays the same forever)", () => {
       [false, false, true, true, false, false],
       [false, false, false, false, false, false],
     ];
-    expect(getUpdatedBoard(cells)).toEqual(cells);
+    expect(getNextGeneration(cells)).toEqual(cells);
   });
 });
 
@@ -39,11 +39,11 @@ describe("oscillating life", () => {
       [false, false, false, false, false],
     ];
 
-    const firstTick = getUpdatedBoard(stateOne);
+    const firstTick = getNextGeneration(stateOne);
 
     expect(firstTick).toEqual(stateTwo);
 
-    const secondTick = getUpdatedBoard(firstTick);
+    const secondTick = getNextGeneration(firstTick);
 
     expect(secondTick).toEqual(stateOne);
   });

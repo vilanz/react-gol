@@ -1,11 +1,19 @@
 import { useEffect, useRef } from "react";
 import { CELL_COLORS, CELL_SIZE } from "../defaults";
+import { Board } from "../logic";
 import { GameDispatch, GameState } from "../reducer";
 import { getReffedValue } from "../utils";
 
-export function getMouseEventCell(clickX: number, clickY: number) {
-  const x = Math.floor(clickX / CELL_SIZE);
-  const y = Math.floor(clickY / CELL_SIZE);
+export function getMouseEventCell(
+  clickX: number,
+  clickY: number,
+  board: Board
+) {
+  const x = Math.floor((clickX + 1) / CELL_SIZE);
+  const y = Math.floor((clickY + 1) / CELL_SIZE);
+  if (x >= board.length || y >= board.length || x < 0 || y < 0) {
+    return null;
+  }
   return { x, y };
 }
 
@@ -63,7 +71,10 @@ export function GameCanvas({
 
     canvasRef.current?.addEventListener("mousedown", (e) => {
       isHoldingClick.current = !isHoldingClick.current;
-      const cell = getMouseEventCell(e.offsetX, e.offsetY);
+      const cell = getMouseEventCell(e.offsetX, e.offsetY, boardRef.current);
+      if (!cell) {
+        return;
+      }
       willBeErasing.current = boardRef.current?.[cell.y]?.[cell.x];
       dispatch({
         type: "DRAW_POINT",
@@ -76,7 +87,10 @@ export function GameCanvas({
     });
 
     canvasRef.current?.addEventListener("mousemove", (e) => {
-      const cell = getMouseEventCell(e.offsetX, e.offsetY);
+      const cell = getMouseEventCell(e.offsetX, e.offsetY, boardRef.current);
+      if (!cell) {
+        return;
+      }
       dispatch({
         type: "HOVER_POINT",
         payload: {
@@ -98,5 +112,10 @@ export function GameCanvas({
     });
   }, []);
 
-  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
+  return (
+    <>
+      <p>Generation: {state.generation}</p>
+      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />
+    </>
+  );
 }

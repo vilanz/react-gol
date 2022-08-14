@@ -3,8 +3,8 @@ import { BOARD_SIZE, DEFAULT_SPEED } from "./defaults";
 import {
   Board,
   drawPointInBoard,
-  getEmptyBoard,
-  getUpdatedBoard,
+  createEmptyBoard,
+  getNextGeneration,
 } from "./logic";
 
 export interface GameState {
@@ -15,7 +15,7 @@ export interface GameState {
   isRunning: boolean;
 }
 export const INITIAL_STATE: GameState = {
-  board: getEmptyBoard(BOARD_SIZE),
+  board: createEmptyBoard(BOARD_SIZE),
   generation: 0,
   currentSpeed: DEFAULT_SPEED,
   hoverPoint: null,
@@ -36,7 +36,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case "UPDATE_BOARD":
       return {
         ...state,
-        board: getUpdatedBoard(state.board),
+        board: getNextGeneration(state.board),
         generation: state.generation + 1,
       };
     case "RESET_BOARD":

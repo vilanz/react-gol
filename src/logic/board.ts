@@ -2,46 +2,7 @@ export type BoardCell = boolean;
 export type BoardRow = BoardCell[];
 export type Board = BoardRow[];
 
-function getCountOfLiveNeighours(row: number, col: number, board: Board) {
-  let count = 0;
-
-  // iterate over all 8 neighbours' positions
-  for (let x = row - 1; x <= row + 1; x++) {
-    for (let y = col - 1; y <= col + 1; y++) {
-      if (x === row && col === y) {
-        // ignore our own position, of course
-        continue;
-      }
-      const isNeighbourAlive = board?.[x]?.[y];
-      if (isNeighbourAlive) {
-        count++;
-      }
-    }
-  }
-
-  return count;
-}
-
-function isCellNowAlive(row: number, col: number, board: Board): BoardCell {
-  const wasAlive = board[row][col];
-  const liveNeighbourCount = getCountOfLiveNeighours(row, col, board);
-  return wasAlive
-    ? liveNeighbourCount === 2 || liveNeighbourCount === 3
-    : liveNeighbourCount === 3;
-}
-
-export function getUpdatedBoard(board: Board): Board {
-  const newBoard: Board = [];
-  for (let row = 0; row < board.length; row++) {
-    newBoard[row] = [];
-    for (let col = 0; col < board[row].length; col++) {
-      newBoard[row][col] = isCellNowAlive(row, col, board);
-    }
-  }
-  return newBoard;
-}
-
-export function getEmptyBoard(size: number): Board {
+export function createEmptyBoard(size: number): Board {
   return Array(size)
     .fill([])
     .map(() => {
@@ -64,5 +25,48 @@ export function drawPointInBoard(
     }
   }
   newBoard[y][x] = !erase;
+  return newBoard;
+}
+
+function getCountOfLiveNeighours(x: number, y: number, board: Board) {
+  let count = 0;
+
+  // iterate over all 8 neighbours' positions
+  for (let row = y - 1; row <= y + 1 && row > 0 && row < board.length; row++) {
+    for (
+      let col = x - 1;
+      col <= x + 1 && col > 0 && col < board[row].length;
+      col++
+    ) {
+      if (row === x && col === y) {
+        // ignore our own position, of course
+        continue;
+      }
+      const isNeighbourAlive = board[row][col];
+      if (isNeighbourAlive) {
+        count++;
+      }
+    }
+  }
+
+  return count;
+}
+
+function isCellNowAlive(x: number, y: number, board: Board): BoardCell {
+  const wasAlive = board[y][x];
+  const liveNeighbourCount = getCountOfLiveNeighours(x, y, board);
+  return wasAlive
+    ? liveNeighbourCount === 2 || liveNeighbourCount === 3
+    : liveNeighbourCount === 3;
+}
+
+export function getNextGeneration(board: Board): Board {
+  const newBoard: Board = [];
+  for (let y = 0; y < board.length; y++) {
+    newBoard[y] = [];
+    for (let x = 0; x < board[y].length; x++) {
+      newBoard[y][x] = isCellNowAlive(x, y, board);
+    }
+  }
   return newBoard;
 }

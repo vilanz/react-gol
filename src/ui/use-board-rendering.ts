@@ -2,10 +2,7 @@ import { useEffect, useRef } from "react";
 import { GameDispatch, GameState } from "../reducer";
 import { useDebouncedValue } from "../utils";
 
-export const useBoardAnimationFrames = (
-  state: GameState,
-  dispatch: GameDispatch
-) => {
+export const useGameLoop = (state: GameState, dispatch: GameDispatch) => {
   const { currentSpeed, isRunning } = state;
   const debouncedSpeed = useDebouncedValue(currentSpeed, 300);
 
