@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
-import { GameCanvas } from "./canvas";
 import { MAX_SPEED, MIN_SPEED, useGame } from "./use-game";
+import { GameCanvas } from "./canvas";
 import "./index.css";
 
 function GameOfLife() {

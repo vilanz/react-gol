@@ -1,4 +1,4 @@
-import { getUpdatedBoard } from "./game-logic";
+import { getUpdatedBoard } from ".";
 
 describe("still life (stays the same forever)", () => {
   test("4x4 block", () => {

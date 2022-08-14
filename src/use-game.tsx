@@ -4,7 +4,7 @@ import {
   getBoardWithNewPoint,
   getEmptyBoard,
   getUpdatedBoard,
-} from "./logic/game-logic";
+} from "./logic";
 import { useDebouncedValue } from "./utils";
 
 const BOARD_SIZE = 75;

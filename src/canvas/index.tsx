@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from "react";
-import { Board } from "./logic/game-logic";
-import { getReffedValue } from "./utils";
+import { Board } from "../logic";
+import { getReffedValue } from "../utils";
 
 const CELL_SIZE = 8;
 
