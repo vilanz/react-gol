@@ -40,7 +40,7 @@ button:hover {
 }
 
 .game-container canvas {
-    border: 5px solid black;
+    border: 8px solid black;
 }
 
 .game-tools {

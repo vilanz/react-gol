@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { CELL_SIZE } from "../defaults";
+import { CELL_COLORS, CELL_SIZE } from "../defaults";
 import { GameDispatch, GameState } from "../reducer";
 import { getReffedValue } from "../utils";
 
@@ -32,9 +32,11 @@ export function GameCanvas({
           ? state.hoverPoint.x === x && state.hoverPoint.y === y
           : false;
         if (isHovering) {
-          canvas2dCtx.fillStyle = "pink";
+          canvas2dCtx.fillStyle = CELL_COLORS.Hovering;
         } else {
-          canvas2dCtx.fillStyle = state.board[y][x] ? "black" : "white";
+          canvas2dCtx.fillStyle = state.board[y][x]
+            ? CELL_COLORS.Live
+            : CELL_COLORS.Dead;
         }
         canvas2dCtx.fillRect(
           x * CELL_SIZE,
