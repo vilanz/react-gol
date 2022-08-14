@@ -24,6 +24,7 @@ export function GameCanvas({
   state: GameState;
   dispatch: GameDispatch;
 }) {
+  const { board, hoverPoint, userHasDrawn } = state;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // assuming our board is square
@@ -34,15 +35,15 @@ export function GameCanvas({
     if (!canvas2dCtx) {
       return;
     }
-    for (let y = 0; y < state.board.length; y++) {
-      for (let x = 0; x < state.board[y].length; x++) {
-        const isHovering = state.hoverPoint
-          ? state.hoverPoint.x === x && state.hoverPoint.y === y
+    for (let y = 0; y < board.length; y++) {
+      for (let x = 0; x < board[y].length; x++) {
+        const isHovering = hoverPoint
+          ? hoverPoint.x === x && hoverPoint.y === y
           : false;
         if (isHovering) {
           canvas2dCtx.fillStyle = CELL_COLORS.Hovering;
         } else {
-          canvas2dCtx.fillStyle = state.board[y][x]
+          canvas2dCtx.fillStyle = board[y][x]
             ? CELL_COLORS.Live
             : CELL_COLORS.Dead;
         }
@@ -54,9 +55,9 @@ export function GameCanvas({
         );
       }
     }
-  }, [state.board, state.hoverPoint]);
+  }, [board, hoverPoint]);
 
-  const boardRef = getReffedValue(state.board);
+  const boardRef = getReffedValue(board);
 
   const isHoldingClick = useRef(false);
   const willBeErasing = useRef(false);
@@ -70,6 +71,11 @@ export function GameCanvas({
     });
 
     canvasRef.current?.addEventListener("mousedown", (e) => {
+      if (!userHasDrawn) {
+        dispatch({
+          type: "USER_FINALLY_DREW_SOMETHING",
+        });
+      }
       isHoldingClick.current = !isHoldingClick.current;
       const cell = getMouseEventCell(e.offsetX, e.offsetY, boardRef.current);
       if (!cell) {
@@ -112,10 +118,5 @@ export function GameCanvas({
     });
   }, []);
 
-  return (
-    <>
-      <p>Generation: {state.generation}</p>
-      <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />
-    </>
-  );
+  return <canvas ref={canvasRef} width={canvasSize} height={canvasSize} />;
 }

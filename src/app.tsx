@@ -1,17 +1,19 @@
 import { useReducer } from "react";
 import ReactDOM from "react-dom/client";
 import { gameReducer, INITIAL_STATE } from "./reducer";
-import { GameCanvas, GameTools, useGameLoop } from "./ui";
+import { GameCanvas, GameTools, useGameLoop, GameInfo } from "./ui";
 
 function GameOfLife() {
+  // poor man's Redux - TODO substitute by redux-toolkit later
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
   useGameLoop(state, dispatch);
 
   return (
     <div className="game-container">
-      <h2>Game of Life</h2>
+      <h1>Game of Life</h1>
       <GameCanvas state={state} dispatch={dispatch} />
+      <GameInfo state={state} />
       <GameTools state={state} dispatch={dispatch} />
     </div>
   );
