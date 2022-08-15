@@ -4,7 +4,7 @@ import { gameReducer, INITIAL_STATE } from "./reducer";
 import { GameCanvas, GameTools, useGameLoop, GameInfo, GitHubLink } from "./ui";
 
 function GameOfLife() {
-  // poor man's Redux - TODO substitute by redux-toolkit later
+  // poor man's Redux, but our component tree isn't very deep anyway
   const [state, dispatch] = useReducer(gameReducer, INITIAL_STATE);
 
   useGameLoop(state, dispatch);
