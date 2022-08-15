@@ -1,3 +1,5 @@
+import githubImageUrl from "./github.png";
+
 export function GitHubLink() {
   return (
     <a
@@ -6,7 +8,7 @@ export function GitHubLink() {
       target="_blank"
       rel="noreferrer"
     >
-      <img src="/github.png" alt="GitHub" />
+      <img src={githubImageUrl} alt="GitHub" />
       source
     </a>
   );
