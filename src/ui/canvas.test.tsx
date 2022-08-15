@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { CELL_SIZE } from "../defaults";
 import { createEmptyBoard } from "../logic";
 import { getMouseEventCell } from "./canvas";
@@ -10,7 +13,7 @@ it.each([
 ])(
   "should return the appropriate cell for a click on %i/%i",
   (x, y, expected) => {
-    expect(getMouseEventCell(x, y, createEmptyBoard(10, 10))).toEqual({
+    expect(getMouseEventCell(x, y, createEmptyBoard(100, 100))).toEqual({
       x: expected[0],
       y: expected[1],
     });

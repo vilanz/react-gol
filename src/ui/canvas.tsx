@@ -10,13 +10,17 @@ import { Board } from "../logic";
 import { GameDispatch, GameState } from "../reducer";
 import { getReffedValue } from "../utils";
 
+function getOffsetPositionInCanvas(position: number) {
+  return Math.floor(position / CELL_SIZE);
+}
+
 export function getMouseEventCell(
   clickX: number,
   clickY: number,
   board: Board
 ) {
-  const x = Math.floor((clickX - 1) / CELL_SIZE);
-  const y = Math.floor((clickY - 1) / CELL_SIZE);
+  const x = getOffsetPositionInCanvas(clickX);
+  const y = getOffsetPositionInCanvas(clickY);
   if (x >= board[0].length || y >= board.length || x < 0 || y < 0) {
     return null;
   }
