@@ -2,6 +2,7 @@
 html { 
     font-family: 'Press Start 2P', monospace;
     font-size: 14px;
+    padding: 6px;
 }
 
 * {
@@ -25,6 +26,12 @@ button {
     font-family: inherit;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+button.start {
+    background-color: rgb(66, 110, 255);
+    color: white;
+    width: 120px;
 }
 
 button:hover {
@@ -64,8 +71,12 @@ button:hover {
 }
 
 a.github {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    /* align to bottom, filling up remaining flex space */
     text-decoration: none;
+    line-height: 32px;
+    padding-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    align-items: end;
 }

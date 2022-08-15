@@ -36,6 +36,7 @@ export function GameTools({
       </button>
       <button
         type="button"
+        className="start"
         onClick={() => {
           dispatch({
             type: "TOGGLE_RUNNING",

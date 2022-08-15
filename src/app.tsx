@@ -13,8 +13,8 @@ function GameOfLife() {
     <div className="game-container">
       <h1>Game of Life</h1>
       <GameCanvas state={state} dispatch={dispatch} />
-      <GameInfo state={state} />
       <GameTools state={state} dispatch={dispatch} />
+      <GameInfo state={state} />
       <GitHubLink />
     </div>
   );
